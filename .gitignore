@@ -1,0 +1,6 @@
+entorno_flask2/
+__pycache__/
+.env
+imagenes/*
+
+
