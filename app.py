@@ -14,8 +14,9 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL')
 app.config['UPLOAD_FOLDER'] = '/imagenes'
-app.config['MAX_CONTENT_LENGTH'] = 10 * 1000 * 1000 # 10 mb max
-app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif', '.pdf']
+
+# app.config['MAX_CONTENT_LENGTH'] = 10 * 1/*000 * 1000 # 10 mb max
+# app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif', '.pdf']
 
 conexion.init_app(app)
 
