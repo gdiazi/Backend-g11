@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from os import environ
+from dotenv import load_dotenv
+from cloudinary import config, uploader, api
+from datetime import timedelta
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +31,7 @@ SECRET_KEY = 'django-insecure-57nn9d&cz8%iu2fgazgn6gbi$!j0ac(2wnh-w&@p#f-97z^8x3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,13 +43,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
-    'gestion'
+    'gestion',
+    'cloudinary'
+    
+    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -77,8 +88,11 @@ WSGI_APPLICATION = 'veterinaria.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':  environ.get('NOMBRE_DB'),
+        'USER':  environ.get('USER_DB'),
+        'PASSWORD':  environ.get('PASSWORD_DB'),
+        'PORT': environ.get('PORT_DB')
     }
 }
 
@@ -125,3 +139,29 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'gestion.Usuario'
+
+
+config(
+    
+  cloud_name = environ.get('CLOUDINARY_NAME'),
+  api_key = environ.get('CLOUDINARY_API_KEY'),
+  api_secret = environ.get('CLOUDINARY_API_SECRET'),
+  secure = True
+  
+  
+
+)
+
+REST_FRAMEWORK = {
+       'DEFAULT_AUTHENTICATION_CLASSES': (
+                'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+   }
+
+
+SIMPLE_JWT= {
+    'ACESS_TOKEN_LIFETIME': timedelta(hours=1, minutes=15)
+}
+
+CORS_ALLOW_ALL_ORIGINS=True
+

@@ -1,5 +1,6 @@
 from django.db import models 
 from django. contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from cloudinary.models import CloudinaryField
 
 class ManejoUsuario(BaseUserManager):
     def create_superuser(self, correo, nombre, apellido, password, tipoUsuario):
@@ -18,9 +19,10 @@ class ManejoUsuario(BaseUserManager):
         nuevo_usuario.save()
     
 
-class usuario(AbstractBaseUser, PermissionsMixin):
+class Usuario(AbstractBaseUser, PermissionsMixin):
     
     id = models.AutoField(primary_key=True, unique=True)
+    nombre = models.TextField(null=False)
     apellido = models.TextField(null=False)
     correo = models.EmailField(max_length=100, unique=True, null=False)
     password = models.TextField(null=False)
@@ -40,4 +42,15 @@ class usuario(AbstractBaseUser, PermissionsMixin):
         db_table = 'usuarios'
         
         
-
+class Mascota(models.Model):
+    id = models.AutoField(primary_key=True, null=False)
+    nombre = models.TextField(null=False)
+    sexo = models.TextField(choices=[('HEMBRA', 'HEMBRA'), ('MACHO', 'MACHO')])
+    fechaNacimiento = models.DateField(db_column='fecha_nacimiento')
+    alergias = models.TextField()
+    foto = CloudinaryField('foto')
+    
+    cliente = models.ForeignKey(to=Usuario, on_delete=models.RESTRICT, db_column='cliente_id')
+    
+    class Meta:
+        db_table = 'mascotas'
