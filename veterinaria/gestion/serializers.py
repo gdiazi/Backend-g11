@@ -19,3 +19,10 @@ class MascotasSerializer(ModelSerializer):
       representacion = super().to_representation(instance)
       representacion['foto'] = instance.foto.url
       return representacion
+    
+    
+class LeerUsuarioSerializer(ModelSerializer):      
+    class Meta:
+      model = Usuario
+      # fields = '__all__'
+      fields = ('id','nombre','apellido','correo','tipoUsuario')
