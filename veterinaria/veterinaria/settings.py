@@ -61,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'veterinaria.urls'
@@ -166,3 +168,4 @@ SIMPLE_JWT= {
 
 CORS_ALLOW_ALL_ORIGINS=True
 
+STATIC_ROOT = BASE_DIR / 'archivos_estaticos'
