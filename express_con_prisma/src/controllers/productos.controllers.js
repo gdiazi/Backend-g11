@@ -6,6 +6,17 @@ export const crearProducto = async (req, res) => {
 
     const data = req.body;
 
+
+    const habilitarCategorias = await Prisma.categoria.findMany({
+        where: { disponibilidad: true },
+    });
+
+    const category = habilitarCategorias.find((c) => c.id === req.body.categoriaId);
+
+    if (!category) {
+        return res.status(400).json({ error: "categoria invalida" });
+    }
+
     const categoria = Prisma.categoria.findFirst({
         where: { id: data.categoriaId },
         select: { id: true },
@@ -48,6 +59,9 @@ export const crearProducto = async (req, res) => {
 
 export const listarProductos = async (req, res) => {
     // agregarlo
+    const productos = await Prisma.producto.findMany();
+    res.json(productos);
+
 }
 
 export const devolverProducto = async (req, res) => {
@@ -73,5 +87,23 @@ export const devolverProducto = async (req, res) => {
 };
 
 export const actualizarProducto = async (req, res) => {
+
+    const { id } = req.params;
+    const productos = await Prisma.producto.findUnique({ where: { id: parseInt(id) } });
+
+    if (!productos) {
+        return res.status(404).json({ error: "Producto no encontrado" });
+    }
+    const { fechaVencimiento, categoriaId, ...rest } = req.body;
+
+    const actualizarProductos = await Prisma.producto.update({
+        where: { id: parseInt(id) },
+        data: {
+            ...rest,
+            categoria: { connect: { id: parseInt(categoriaId) } },
+            fecha_vencimiento: fechaVencimiento ? new Date(fechaVencimiento) : null,
+        },
+    });
+    res.json(actualizarProductos);
 
 }
