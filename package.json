@@ -1,0 +1,31 @@
+{
+  "name": "autenticacion_express",
+  "version": "1.0.0",
+  "description": "proyecto para ver auth express con prisma",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gdiazi/Backend-g11.git"
+  },
+  "author": "Guillermo Diaz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gdiazi/Backend-g11/issues"
+  },
+  "homepage": "https://github.com/gdiazi/Backend-g11#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "nodemon": "^2.0.22",
+    "prisma": "^4.12.0"
+  }
+}
