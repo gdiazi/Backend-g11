@@ -9,3 +9,66 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+
+enum tipo{
+  CLIENTE
+  ADMINISTRADOR
+}
+
+
+model Usuarios{
+  id Int @id @default(autoincrement())
+  nombre String
+  apellido String
+  correo String @unique
+  password String
+  tipoUsuario tipo 
+  carrito Carrito? 
+
+}
+
+model Carrito{
+    id Int @id @default(autoincrement())
+    usuarioId Int @unique
+    usuarios Usuarios @relation(fields: [usuarioId], references: [id])
+    
+
+
+   
+    itemsCarrito ItemsCarrito[]
+    @@map("carrito")
+
+
+    
+}
+
+model ItemsCarrito{
+  id Int @id @default(autoincrement())
+  cantidad Int
+  productoId Int @map("producto_id")
+  carritoId Int @map("carrito_id")
+
+
+  carrito Carrito @relation(fields: [carritoId], references: [id])
+  producto Producto @relation(fields: [productoId], references: [id])
+  @@map("itemsCarrito") 
+
+
+}
+
+model Producto{
+  id Int @id @default(autoincrement())
+  nombre String
+  precio Float
+  precioOferta Float
+  disponible Boolean @default(true)
+  descripcion String
+  procedencia String
+
+  itemsCarrito ItemsCarrito[]
+  @@map("producto")
+
+}
+
